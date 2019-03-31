@@ -1,56 +1,50 @@
-# Problem
+# Take Home Project
 
-We need to clearance inventory from time to time.  Certain items don't sell through to our clients, so every month, we collect certain unsold items and sell them to a third party vendor for a portion of their wholesale price.
+This is my submission for the take home project for First Circle.
 
-This repository is a bare-bones application that meets that need, but it's in need of some enhancements, which we'd like you provide.
+## How to run
 
-# Vocabulary
+```
+rbenv install 2.3.4
+rbenv local 2.3.4
+rbenv rehash
 
-_Items_ refer to individual pieces of clothing.  So, if we have two of the exact same type of jeans, we have two items.  Items are grouped by _style_, so
-the two aforementioned items would have the same style.
+rake db:reset # or bundle exec rake db:reset
+rails s
+```
 
-Important data about an item is:
+## What's new in 2.0?
 
-* size
-* color
-* status - sellable, not sellable, sold, clearanced
-* price sold
-* date sold
+#### Models
+- `StyleType` - a model that captures the general style types (i.e. Dress, Pants). This model also contains the _minimum_price_ by which a general style should be sold (i.e Dresses cannot be sold for less than 5 USD)
+- `Style` - a model that captures the specific styles (i.e Sunday Dress, Jogging Pants)
+- `Items` - I added state_machine to manage the status of items. 
 
-A style's important data is:
-
-* wholesale price
-* retail price
-* type - pants, shirts, dresses, skirts, other
-* name
-
-The _users_ of this application are warehouse employees (not developers).  They have a solid understanding the business process they must carry out and look to our software to support them.
-
-# Requirements
-
-This application currently handles the clearance task in a very basic way. A spreadsheet containing a list of item ids is uploaded and those items are clearanced as a batch. Items can only be sold at clearance if their status is 'sellable'. When the item is clearanced, we sell it at 75% of the wholesale price, and record that as "price sold".
-
-You should be able to play around with the app by uploading the CSV file in this repository.
-
-We'd like you to make some improvements, specifically:
-
-- We're selling some items for less than we'd like, so we want to set a minimum price for items whose clearance discount is too low.  For pants and dresses, ensure they don't sell for less than $5. For all other items the minimum price is $2.
-- The vendor buying the items on clearance needs to know what they've just purchased, so please provide a report for each batch about what items were clearanced.
-
-
-# Tech Specs:
-
-- Rails 4.2
-- Ruby 2.2
-- SQLite preferred, Postgres OK
-- Anything can be changed if you think it's needed, including database schema, Rails config, whatever
-
-# Some other guidance
-
-This is evaluating your product thinking as well as coding and testing ability.  We want to see that you:
-
-* Have thought about the user experience of the product
-* Are willing to refactor when necessary
-* Will test at an appropriate level
-
-If you need to make an assumption about a vague requirement, feel free, just state what it is.
+#### Backend
+- I totally rebuild the backend to be organized in small, independent, testable units.
+- For this rebuild, I used the following gems:
+    - `interactor` - this gem helps me setup simple, single-purpose objects which I can use to create the small, independent, testable units of the rebuilt application. The interactor gems comes with methods such as _success?_,  _failure?_, _fail!_, and _errors_. This helps me create a more consistent interface to each unit of the application.
+    - `interactor-contracts` - Ensuring the interactor has A, B, C variables (of type String, Int and Item) for input and D variables (of type Array) for output can be a pain point when working with the interactor gem. With interactor_contracts, I get to be able to define the input and output required (and what data type) with a simple DSL provided by the gem.
+    - `state_machine` - This gem makes coding state transitions, and state transition rules a breeze with its easy-to-use interface.
+    - `factory-bot` - A better version of factory-girl
+- The interactor units for batch clearing are arranged in this way
+    - `ClearanceBatches::Operations::ClearBatch`
+        - `ClearanceBatches::ReadCsv` - Get the file containing the item_ids of the items for clearing, validate each one, and return a list of items ready for clearance.
+            - `Items::Validate` - This validates an item_id if it is valid (it is an non-zero integer), exists (represents a record in DB), sellable (the item is state = sellable)
+        - `ClearanceBatches::Execute` - Get the list of items and clear them.
+            - `Items::Operations::ClearItem.call(item: item)` - The list of items is looped through, with each item sent to this organizer.
+                - `Items::ComputeClearancePrice` - This computes the price the item will be cleared for
+                - `Items::ExecuteClearanceSale` - This clears the item and writes the price_sold to the database
+#### Conventions
+- Working with both a legacy project and a newly released project in my current company, I learned the importance of setting code conventions with the team and enforcing that tightly through code reviews. For my rebuild, I set the following conventions:
+    - `app/interactors/<model>` - the interactor units will be organized in model folders. This makes it easier to find interactors for reuse for similar but not same operations (i.e clear special items)
+    - `app/interactors/<model>/operations` - the operations folder will contain the organizers or units that are connected to the controller directly. 
+#### Frontend
+- I migrated all views to HAML to make it easier to write to.
+- I added a second view (/clearance_batches/3) that shows a report of the clearance batch. 
+    - To provide a better UI, I provided the f.f:
+        - The report DOES NOT show every item sold under the clearance batch. That would be too much and too unnecessary. 
+        - The report DOES group each item sold by style
+        - The report shows the price_sold, wholesale_price, and the revenue. These are the things a typical business/operations person want to see.
+        - Provided total revenue and total item count for the batch.
+        - Provided Navs to go back to the index page.
