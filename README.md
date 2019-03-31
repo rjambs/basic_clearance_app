@@ -10,7 +10,9 @@ I'm not sure how the local setup of the checker would be so I dockerized this ap
 
 0. Clone this setup
 
+```
 git clone https://github.com/rjambs/basic_clearance_app.git
+```
 
 1. Install Docker and Docker Compose (https://docs.docker.com/install/)
 
@@ -45,8 +47,9 @@ https://github.com/9to6/docker-ruby-2.3.4/blob/master/Dockerfile#L3
 #### Via Rails Server
 
 0. Clone this setup
-
+```
 git clone https://github.com/rjambs/basic_clearance_app.git
+```
 
 1. Install Ruby 2.3.4
 
