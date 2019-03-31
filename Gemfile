@@ -10,8 +10,8 @@ gem "bootstrap-sass"
 
 group :test, :development do
   gem "rspec-rails"
-  gem "capybara"
-  gem "database_cleaner", git: "git@github.com:bmabey/database_cleaner.git"
+  gem "capybara", "3.13.2"
+  gem "database_cleaner"
   gem "ruby_css_lint"
   gem "selenium-webdriver"
   gem "factory_bot"
@@ -28,4 +28,3 @@ gem 'state_machines-activerecord'
 
 gem 'haml'
 gem "haml-rails", "~> 1.0"
-gem 'jquery-rails'

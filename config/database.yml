@@ -13,3 +13,12 @@ test:
   pool: 5
   username: rajamby
   password:
+
+docker_development:
+  adapter: postgresql
+  encoding: unicode
+  host: fcr_db
+  username: postgres
+  password:
+  pool: 5
+  database: fcr_docker_development

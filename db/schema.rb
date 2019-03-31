@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 20190331013944) do
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal "clearance_price_minimum"
     t.integer "style_type_id"
   end
 

@@ -4,14 +4,34 @@ This is my submission for the take home project for First Circle.
 
 ## How to run
 
-```
-rbenv install 2.3.4
-rbenv local 2.3.4
-rbenv rehash
+I'm not sure how the local setup of the checker would be so I dockerized this application so it can be built anywhere using the Dockerfile I've created, unique for this setup. 
 
-rake db:reset # or bundle exec rake db:reset
-rails s
+1. Install Docker and Docker Compose (https://docs.docker.com/install/)
+
+2. Build the docker compose environment
+
 ```
+cd <to-the-project-directory>
+cd compose
+docker-compose build
+docker-compose up
+```
+
+3. Run the following one-time setup scripts
+
+```
+# (1) find out the container-hash of the container 'fcr-web'
+docker ps
+
+# (2) create the local database
+docker exec <chash> rake db:create
+docker exec <chash> rake db:migrate
+docker exec <chash> rake db:seed
+```
+
+References for the Docker Setup
+
+https://github.com/9to6/docker-ruby-2.3.4/blob/master/Dockerfile#L3
 
 ## What's new in 2.0?
 

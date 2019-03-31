@@ -1,0 +1,19 @@
+version: '3'
+services:
+  fcr_db:
+    image: postgres
+    volumes:
+      - ../tmp/db:/var/lib/postgresql/data
+  fcr_web:
+    build: ../
+    command: bundle exec rails s -p 21212 -b '0.0.0.0'
+    volumes:
+      - ../:/myapp
+    environment:
+      RAILS_ENV: "docker_development"
+    ports:
+      - "21212:21212"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - fcr_db
