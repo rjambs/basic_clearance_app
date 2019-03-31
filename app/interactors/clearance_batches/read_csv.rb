@@ -28,8 +28,6 @@ module ClearanceBatches
         end
       end
 
-      binding.pry
-
       context.fail!(error: "Some rows are problematic: #{context.errors}") if context.errors.any?
     end
   end

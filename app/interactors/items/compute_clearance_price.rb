@@ -16,12 +16,12 @@ module Items
 
 
     def determine_final_clearance_price(clearance_price)
-      if context.item.style.clearance_price_minimum.nil?
+      if context.item.style.style_type.clearance_price_minimum.nil?
         return clearance_price if clearance_price >= Item::DEFAULT_CLEARANCE_PRICE_MIN
         Item::DEFAULT_CLEARANCE_PRICE_MIN
       else
-        return clearance_price if clearance_price >= context.item.style.clearance_price_minimum
-        context.item.style.clearance_price_minimum
+        return clearance_price if clearance_price >= context.item.style.style_type.clearance_price_minimum
+        context.item.style.style_type.clearance_price_minimum
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190329045611) do
+ActiveRecord::Schema.define(version: 20190331013944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,11 @@ ActiveRecord::Schema.define(version: 20190329045611) do
     t.index ["clearance_batch_id"], name: "index_items_on_clearance_batch_id"
   end
 
+  create_table "style_types", force: :cascade do |t|
+    t.string "name"
+    t.decimal "clearance_price_minimum"
+  end
+
   create_table "styles", id: :serial, force: :cascade do |t|
     t.decimal "wholesale_price"
     t.decimal "retail_price"
@@ -41,6 +46,7 @@ ActiveRecord::Schema.define(version: 20190329045611) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal "clearance_price_minimum"
+    t.integer "style_type_id"
   end
 
 end

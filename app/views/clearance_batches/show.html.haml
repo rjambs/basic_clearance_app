@@ -1,0 +1,31 @@
+= link_to "< BACK", clearance_batches_url
+
+%h2= "Report for Clearance Batch #{@clearance_batch.id} (#{@clearance_batch.created_at.strftime('%b %d, %Y')})"
+%h4= "#{@clearance_batch.items.count} Garments | #{@total_revenue} Total Revenue"
+
+%br
+%br
+
+%table.table.table-striped.clearance_batches
+  %thead
+    %tr
+      %th Style Name
+      %th Style Type
+      %th Color
+      %th Size
+      %th Items Count
+      %th Wholesale Price
+      %th Price Sold
+      %th Revenue
+
+  %tbody
+    - @summary.each do |row|
+      %tr
+        %td= row[:style_name]
+        %td= row[:style_type]
+        %td= row[:color]
+        %td= row[:size]
+        %td= row[:items_count]
+        %td= row[:wholesale_price]
+        %td= row[:price_sold]
+        %td= row[:revenue]
