@@ -6,7 +6,7 @@ describe ClearanceBatches::ReadCsv do
   describe "success cases" do
     include_context "normal csv"
 
-    let(:context) { described_class.call(uploaded_file_name: csv_filename)  }
+    let(:context) { described_class.call(uploaded_file: csv_filename)  }
 
 
     it "must read the csv and come up with the items listed here" do
@@ -21,7 +21,7 @@ describe ClearanceBatches::ReadCsv do
   describe "failure case - csv has rows that dont exist in db" do
     include_context "erroneous csv"
 
-    let(:context) { described_class.call(uploaded_file_name: csv_filename)  }
+    let(:context) { described_class.call(uploaded_file: csv_filename)  }
 
     it "must fail" do
       expect(context.error).to eq("Some rows are problematic: {99=>\"Item id 99 could not be found\"}")

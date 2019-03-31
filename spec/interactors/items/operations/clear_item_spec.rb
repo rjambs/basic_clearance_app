@@ -2,8 +2,7 @@
 
 require "rails_helper"
 
-describe Items::Operations::
-ClearItem do
+describe Items::Operations::ClearItem do
   include_context "setup items with styles"
 
   describe "success case" do

@@ -6,5 +6,6 @@ FactoryBot.define do
     retail_price { BigDecimal.new(5000) }
     type { "Sweater"}
     name { "Golden Fleece Sweater" }
+    style_type
   end
 end

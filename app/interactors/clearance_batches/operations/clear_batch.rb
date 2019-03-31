@@ -6,7 +6,7 @@ module ClearanceBatches
       include Interactor::Organizer
 
       expects do
-        required(:uploaded_file).value(type?: Tempfile)
+        required(:uploaded_file)
       end
 
       assures do

@@ -6,7 +6,7 @@ describe ClearanceBatches::Operations::ClearBatch do
   describe "success cases" do
     include_context "normal csv"
 
-    let(:context) { described_class.call(uploaded_file_name: csv_filename)  }
+    let(:context) { described_class.call(uploaded_file: csv_filename)  }
 
     it "must read the csv and come up with the items listed here" do
       expect(context.items.map{|i| [i.size, i.color]}).to eq(items.map{|i| [i.size, i.color]})

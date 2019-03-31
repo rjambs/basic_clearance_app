@@ -1,4 +1,5 @@
-# bundle exec rspec spec/interactors/items/compute_clearance_price_spec.rb
+# 
+
 
 require "rails_helper"
 
@@ -17,7 +18,7 @@ describe Items::ComputeClearancePrice do
   describe "success - case 2: " do
     let(:context) { described_class.call(item: item_two)  }
 
-    it "should be 15php" do
+    it "should be 5php" do
       expect(context.price).to eq(BigDecimal.new(5))
     end
   end
