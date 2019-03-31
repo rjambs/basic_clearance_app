@@ -1,16 +1,20 @@
+# ClearanceBatches::Operations::ClearBatch.call(uploaded_file_name: "")
+
 module ClearanceBatches
-  class ClearBatch < BaseInteractor
-    include Interactor::Organizer
+  module Operations
+    class ClearBatch < BaseInteractor
+      include Interactor::Organizer
 
-    expects do
-      required(:uploaded_file_name).value(type?: String)
+      expects do
+        required(:uploaded_file).value(type?: Tempfile)
+      end
+
+      assures do
+        required(:clearance_batch).value(type?: ClearanceBatch)
+      end
+
+      organize ClearanceBatches::ReadCsv,
+               ClearanceBatches::Execute
     end
-
-    assures do
-      required(:clearance_batch).value(type?: String)
-    end
-
-    organize ClearanceBatches::ReadCsv,
-             ClearanceBatches::Execute
   end
 end

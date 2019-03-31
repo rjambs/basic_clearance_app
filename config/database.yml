@@ -5,3 +5,11 @@ development:
   pool: 5
   username: rajamby
   password:
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: fcr_test
+  pool: 5
+  username: rajamby
+  password:

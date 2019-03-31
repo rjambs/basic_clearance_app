@@ -1,7 +1,11 @@
 module Items
   class Validate < BaseInteractor      
     expects do
-      required(:item_id).value(type?: String)
+      required(:item_id).value(type?: Integer)
+    end
+    
+    assures do
+      required(:item).value(type?: Item)
     end
 
     def call
@@ -17,7 +21,8 @@ module Items
     end
 
     def check_item_existence
-      return if Item.where(id: context.item_id).exists?
+      context.item = Item.find_by_id(context.item_id)
+      return if context.item
 
       context.fail!(error: "Item id #{context.item_id} could not be found")      
     end

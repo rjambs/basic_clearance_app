@@ -6,8 +6,8 @@ describe "add new monthly clearance_batch" do
 
     describe "see previous clearance batches" do
 
-      let!(:clearance_batch_1) { FactoryGirl.create(:clearance_batch) }
-      let!(:clearance_batch_2) { FactoryGirl.create(:clearance_batch) }
+      let!(:clearance_batch_1) { FactoryBot.create(:clearance_batch) }
+      let!(:clearance_batch_2) { FactoryBot.create(:clearance_batch) }
 
       it "displays a list of all past clearance batches" do
         visit "/"
@@ -26,7 +26,7 @@ describe "add new monthly clearance_batch" do
       context "total success" do
 
         it "should allow a user to upload a new clearance batch successfully" do
-          items = 5.times.map{ FactoryGirl.create(:item) }
+          items = 5.times.map{ FactoryBot.create(:item) }
           file_name = generate_csv_file(items)
           visit "/"
           within('table.clearance_batches') do
@@ -47,7 +47,8 @@ describe "add new monthly clearance_batch" do
       context "partial success" do
 
         it "should allow a user to upload a new clearance batch partially successfully, and report on errors" do
-          valid_items   = 3.times.map{ FactoryGirl.create(:item) }
+          valid_items   = 3.times.map{ FactoryBot.create(:item) }
+          valid_items.each{|i| i.sell_for_clearance! }
           invalid_items = [[987654], ['no thanks']]
           file_name     = generate_csv_file(valid_items + invalid_items)
           visit "/"

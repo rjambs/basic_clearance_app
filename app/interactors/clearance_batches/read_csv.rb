@@ -1,30 +1,36 @@
+require 'csv'
+
 module ClearanceBatches
   class ReadCsv < BaseInteractor    
     expects do
-      required(:uploaded_file_name).value(type?: String)
+      required(:uploaded_file).value(type?: Tempfile)
     end
 
     assures do
-      required(:item_ids_to_clearance).each(type?: Integer)
+      required(:items).each(type?: Item)
     end
 
     before do
       context.errors = {}
+      context.items = []
     end
 
     def call
-      CSV.foreach(context.uploaded_file_name, headers: false) do |row|
+      CSV.foreach(context.uploaded_file, headers: false) do |row|
         potential_item_id = row[0].to_i
         row_handler = Items::Validate.call(item_id: potential_item_id)
+        item = row_handler.item
 
         if row_handler.success?
-          context.item_ids_to_clearance << row_handler.potential_item_id
+          context.items  << item
         else
-          context.errors[potential_item_id] << row_handler.error
+          context.errors[potential_item_id] = row_handler.error
         end
       end
 
-      context.fail!(error: "Some rows are problematic: #{context.errors}") dif context.errors.any?
+      binding.pry
+
+      context.fail!(error: "Some rows are problematic: #{context.errors}") if context.errors.any?
     end
   end
 end
