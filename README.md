@@ -4,7 +4,13 @@ This is my submission for the take home project for First Circle.
 
 ## How to run
 
+#### Via Docker
+
 I'm not sure how the local setup of the checker would be so I dockerized this application so it can be built anywhere using the Dockerfile I've created, unique for this setup. 
+
+0. Clone this setup
+
+git clone https://github.com/rjambs/basic_clearance_app.git
 
 1. Install Docker and Docker Compose (https://docs.docker.com/install/)
 
@@ -29,9 +35,40 @@ docker exec <chash> rake db:migrate
 docker exec <chash> rake db:seed
 ```
 
+4. Go to localhost:21212
+
+
 References for the Docker Setup
 
 https://github.com/9to6/docker-ruby-2.3.4/blob/master/Dockerfile#L3
+
+#### Via Rails Server
+
+0. Clone this setup
+
+git clone https://github.com/rjambs/basic_clearance_app.git
+
+1. Install Ruby 2.3.4
+
+```
+rbenv install 2.3.4
+rbenv local 2.3.4
+rbenv rehash
+```
+
+2. Create the database
+
+```
+rake db:reset
+```
+
+3. Run the server
+
+```
+rails s -p 21212
+```
+
+4. Go to localhost:21212
 
 ## What's new in 2.0?
 
