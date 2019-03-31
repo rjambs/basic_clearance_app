@@ -1,6 +1,6 @@
-# Take Home Project
+# Basic Clearance App
 
-This is my submission for the take home project for First Circle.
+This is a basic clearance app
 
 ## How to run
 
